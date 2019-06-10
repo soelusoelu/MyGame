@@ -43,6 +43,14 @@ public:
     CREATE_FUNC(HelloWorld);
 
     cocos2d::Sprite* sprite;
+    cocos2d::Sprite* sprite2;
+
+    float alpha;
+    int rotation;
+    enum Dir {
+        UP, DOWN, LEFT, RIGHT
+    };
+    Dir dir;
 };
 
 #endif // __HELLOWORLD_SCENE_H__

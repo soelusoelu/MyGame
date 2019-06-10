@@ -27,11 +27,6 @@
 
 USING_NS_CC;
 
-float alpha = 255;
-enum Dir {
-    UP, DOWN, LEFT, RIGHT
-};
-Dir dir;
 
 Scene* HelloWorld::createScene() {
     return HelloWorld::create();
@@ -99,16 +94,20 @@ bool HelloWorld::init() {
 
     //テクスチャファイル名を指定して、スプライトを作成
     sprite = Sprite::create("forest.png");
+    sprite2 = Sprite::create("maki.png");
     //シーングラフにつなぐ
     this->addChild(sprite);
+    this->addChild(sprite2);
 
     //表示座標を指定
     sprite->setPosition(Vec2(1000.f, 600.f));
+    sprite2->setPosition(Vec2(1000.f, 600.f));
     //回転角を指定(45度)
     //sprite->setRotation(45.f);
     //拡縮を指定(横3倍、縦4倍)
     //sprite->setScale(3.f, 4.f);
     sprite->setScale(0.1f);
+    sprite2->setScale(0.1f);
     //左右反転
     //sprite->setFlippedX(true);
     //上下反転
@@ -119,9 +118,12 @@ bool HelloWorld::init() {
     //sprite->setColor(Color3B(0x00, 0xff, 0xff));
     //不透明度を設定
     //sprite->setOpacity(0x80);
+    //sprite->setAnchorPoint(Vec2(0.f, 1.f));
 
     this->scheduleUpdate();
 
+    alpha = 255;
+    rotation = 0;
     dir = Dir::LEFT;
 
     return true;
@@ -143,6 +145,7 @@ void HelloWorld::menuCloseCallback(Ref* pSender) {
 void HelloWorld::update(float delta) {
     //スプライトの現在座標を取得
     Vec2 pos = sprite->getPosition();
+    Vec2 pos2 = sprite2->getPosition();
     //座標を移動させる
     //pos += Vec2(-1.f, 0.f);
     //移動後の座標を反映
@@ -150,30 +153,34 @@ void HelloWorld::update(float delta) {
 
     alpha -= 0.85f; //255 / 5 = 51, 51 / 60 = 0.85
     sprite->setOpacity(alpha);
+    sprite2->setOpacity(255 - alpha);
 
-    switch (dir) {
-    case UP:
-        pos.y += 1.f;
-        break;
-    case DOWN:
-        pos.y -= 1.f;
-        break;
-    case LEFT:
-        pos.x -= 1.f;
-        break;
-    case RIGHT:
-        pos.x += 1.f;
-        break;
-    }
-    sprite->setPosition(pos);
+    //rotation++;
+    //sprite->setRotation(rotation);
 
-    if (dir == Dir::LEFT && pos.x < 150) {
-        dir = Dir::DOWN;
-    } else if (dir == Dir::DOWN && pos.y < 100) {
-        dir = Dir::RIGHT;
-    } else if (dir == Dir::RIGHT && pos.x > 1100) {
-        dir = Dir::UP;
-    } else if (dir == Dir::UP && pos.y > 600) {
-        dir = Dir::LEFT;
-    }
+    //switch (dir) {
+    //case UP:
+    //    pos.y += 1.f;
+    //    break;
+    //case DOWN:
+    //    pos.y -= 1.f;
+    //    break;
+    //case LEFT:
+    //    pos.x -= 1.f;
+    //    break;
+    //case RIGHT:
+    //    pos.x += 1.f;
+    //    break;
+    //}
+    //sprite->setPosition(pos);
+
+    //if (dir == Dir::LEFT && pos.x < 150) {
+    //    dir = Dir::DOWN;
+    //} else if (dir == Dir::DOWN && pos.y < 100) {
+    //    dir = Dir::RIGHT;
+    //} else if (dir == Dir::RIGHT && pos.x > 1100) {
+    //    dir = Dir::UP;
+    //} else if (dir == Dir::UP && pos.y > 600) {
+    //    dir = Dir::LEFT;
+    //}
 }
