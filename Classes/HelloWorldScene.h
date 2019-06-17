@@ -47,6 +47,7 @@ public:
 
     float alpha;
     int rotation;
+    int animTime;
     enum Dir {
         UP, DOWN, LEFT, RIGHT
     };

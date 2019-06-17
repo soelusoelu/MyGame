@@ -93,21 +93,21 @@ bool HelloWorld::init() {
     }
 
     //テクスチャファイル名を指定して、スプライトを作成
-    sprite = Sprite::create("forest.png");
-    sprite2 = Sprite::create("maki.png");
+    sprite = Sprite::create("sample04.png");
+    //sprite2 = Sprite::create("maki.png");
     //シーングラフにつなぐ
     this->addChild(sprite);
-    this->addChild(sprite2);
+    //this->addChild(sprite2);
 
     //表示座標を指定
-    sprite->setPosition(Vec2(1000.f, 600.f));
-    sprite2->setPosition(Vec2(1000.f, 600.f));
+    sprite->setPosition(Vec2(1000.f, 400.f));
+    //sprite2->setPosition(Vec2(1000.f, 600.f));
     //回転角を指定(45度)
     //sprite->setRotation(45.f);
     //拡縮を指定(横3倍、縦4倍)
     //sprite->setScale(3.f, 4.f);
-    sprite->setScale(0.1f);
-    sprite2->setScale(0.1f);
+    sprite->setScale(10.f);
+    //sprite2->setScale(0.1f);
     //左右反転
     //sprite->setFlippedX(true);
     //上下反転
@@ -119,11 +119,13 @@ bool HelloWorld::init() {
     //不透明度を設定
     //sprite->setOpacity(0x80);
     //sprite->setAnchorPoint(Vec2(0.f, 1.f));
+    sprite->getTexture()->setAliasTexParameters();
 
     this->scheduleUpdate();
 
-    alpha = 255;
-    rotation = 0;
+    //alpha = 255;
+    //rotation = 0;
+    animTime = 0;
     dir = Dir::LEFT;
 
     return true;
@@ -145,42 +147,67 @@ void HelloWorld::menuCloseCallback(Ref* pSender) {
 void HelloWorld::update(float delta) {
     //スプライトの現在座標を取得
     Vec2 pos = sprite->getPosition();
-    Vec2 pos2 = sprite2->getPosition();
+    //Vec2 pos2 = sprite2->getPosition();
     //座標を移動させる
     //pos += Vec2(-1.f, 0.f);
     //移動後の座標を反映
     //sprite->setPosition(pos);
 
-    alpha -= 0.85f; //255 / 5 = 51, 51 / 60 = 0.85
-    sprite->setOpacity(alpha);
-    sprite2->setOpacity(255 - alpha);
+    //alpha -= 0.85f; //255 / 5 = 51, 51 / 60 = 0.85
+    alpha -= 1.41666f;
+    sprite->setColor(cocos2d::Color3B(alpha, 0, 255 - alpha));
+    //sprite->setOpacity(alpha);
+    //sprite2->setOpacity(255 - alpha);
 
     //rotation++;
     //sprite->setRotation(rotation);
 
-    //switch (dir) {
-    //case UP:
-    //    pos.y += 1.f;
-    //    break;
-    //case DOWN:
-    //    pos.y -= 1.f;
-    //    break;
-    //case LEFT:
-    //    pos.x -= 1.f;
-    //    break;
-    //case RIGHT:
-    //    pos.x += 1.f;
-    //    break;
-    //}
-    //sprite->setPosition(pos);
+    animTime++;
+    if (animTime > 60) {
+        animTime = 0;
+    }
+
+    float animRect = 0.f;
+    if (0 <= animTime && animTime < 15) {
+        animRect = 0.f;
+    } else if (15 <= animTime && animTime < 30 || 45 <= animTime) {
+        animRect = 42.f;
+    } else if (30 <= animTime && animTime < 45) {
+        animRect = 84.f;
+    }
+    switch (dir) {
+        //case UP:
+        //    pos.y += 3.f;
+        //    break; 
+        //case DOWN:
+        //    pos.y -= 3.f;
+        //    break;
+    case LEFT:
+        pos.x -= 3.f;
+        sprite->setTextureRect(cocos2d::Rect(animRect, 46.f, 32.f, 32.f));
+        break;
+    case RIGHT:
+        pos.x += 3.f;
+        sprite->setTextureRect(cocos2d::Rect(animRect, 86.f, 32.f, 32.f));
+        break;
+    }
+    sprite->setPosition(pos);
+
+    if (dir == Dir::LEFT && pos.x < 150) {
+        dir = Dir::RIGHT;
+    } else if (dir == Dir::RIGHT && pos.x > 1100) {
+        dir = Dir::LEFT;
+    }
 
     //if (dir == Dir::LEFT && pos.x < 150) {
     //    dir = Dir::DOWN;
     //} else if (dir == Dir::DOWN && pos.y < 100) {
     //    dir = Dir::RIGHT;
+    //    sprite->setFlippedX(true);
     //} else if (dir == Dir::RIGHT && pos.x > 1100) {
     //    dir = Dir::UP;
     //} else if (dir == Dir::UP && pos.y > 600) {
     //    dir = Dir::LEFT;
+    //    sprite->setFlippedX(true);
     //}
 }
