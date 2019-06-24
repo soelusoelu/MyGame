@@ -95,19 +95,22 @@ bool HelloWorld::init() {
 	//—”‚Ì‰Šú‰»
 	srand(time(nullptr));
 
-	for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < 1; i++) {
 		sprite[i] = Sprite::create("forest.png");
 		this->addChild(sprite[i]);
 		sprite[i]->setScale(0.1f);
 
-		float mx, my;
-		mx = static_cast<float>(rand()) / RAND_MAX * 600;
-		my = static_cast<float>(rand()) / RAND_MAX * 400;
+		//float mx, my;
+		//mx = static_cast<float>(rand()) / RAND_MAX * 1080;
+		//my = static_cast<float>(rand()) / RAND_MAX * 720;
 
-		sprite[i]->setPosition(Vec2(200.f * i, visibleSize.height / 2.f));
+		sprite[i]->setPosition(Vec2(900.f, 600.f));
 
-		MoveBy* action1 = MoveBy::create(1.f, Vec2(mx, my));
+		MoveTo* action1 = MoveTo::create(5.f, Vec2(150.f, 600.f));
+		FadeOut* action2 = FadeOut::create(5.f);
+		//JumpBy* action1 = JumpBy::create(2.f, Vec2(600.f, 0.f), 100.f, 4);
 		sprite[i]->runAction(action1);
+		sprite[i]->runAction(action2);
 	}
 
 	this->scheduleUpdate();
