@@ -63,8 +63,7 @@ bool HelloWorld::init() {
 		closeItem->getContentSize().width <= 0 ||
 		closeItem->getContentSize().height <= 0) {
 		problemLoading("'CloseNormal.png' and 'CloseSelected.png'");
-	}
-	else {
+	} else {
 		float x = origin.x + visibleSize.width - closeItem->getContentSize().width / 2;
 		float y = origin.y + closeItem->getContentSize().height / 2;
 		closeItem->setPosition(Vec2(x, y));
@@ -84,8 +83,7 @@ bool HelloWorld::init() {
 	auto label = Label::createWithTTF("Hello World", "fonts/Marker Felt.ttf", 24);
 	if (label == nullptr) {
 		problemLoading("'fonts/Marker Felt.ttf'");
-	}
-	else {
+	} else {
 		// position the label on the center of the screen
 		label->setPosition(Vec2(origin.x + visibleSize.width / 2,
 			origin.y + visibleSize.height - label->getContentSize().height));
@@ -94,14 +92,21 @@ bool HelloWorld::init() {
 		this->addChild(label, 1);
 	}
 
-	for (int i = 0; i < 5; i++)
-	{
+	//—”‚Ì‰Šú‰»
+	srand(time(nullptr));
+
+	for (int i = 0; i < 5; i++) {
 		sprite[i] = Sprite::create("forest.png");
 		this->addChild(sprite[i]);
 		sprite[i]->setScale(0.1f);
+
+		float mx, my;
+		mx = static_cast<float>(rand()) / RAND_MAX * 600;
+		my = static_cast<float>(rand()) / RAND_MAX * 400;
+
 		sprite[i]->setPosition(Vec2(200.f * i, visibleSize.height / 2.f));
 
-		MoveBy* action1 = MoveBy::create(1.f, Vec2(400.f, 200.f));
+		MoveBy* action1 = MoveBy::create(1.f, Vec2(mx, my));
 		sprite[i]->runAction(action1);
 	}
 
