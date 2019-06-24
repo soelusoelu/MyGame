@@ -94,38 +94,16 @@ bool HelloWorld::init() {
 		this->addChild(label, 1);
 	}
 
-	//スプライトを作成
-	sprite = Sprite::create("forest.png");
-	sprite->setPosition(Vec2(visibleSize.width / 2.f, visibleSize.height / 2.f));
-	sprite->setScale(0.1f, 0.1f);
-	this->addChild(sprite);
-	//アクションの生成
-	MoveBy* action1 = MoveBy::create(1.f, Vec2(400.f, 200.f));
-	sprite->runAction(action1);
+	for (int i = 0; i < 5; i++)
+	{
+		sprite[i] = Sprite::create("forest.png");
+		this->addChild(sprite[i]);
+		sprite[i]->setScale(0.1f);
+		sprite[i]->setPosition(Vec2(200.f * i, visibleSize.height / 2.f));
 
-	//スプライト2を生成
-	sprite2 = Sprite::create("maki.png");
-	sprite2->setPosition(Vec2(300.f, visibleSize.height / 2.f));
-	sprite2->setScale(0.1f, 0.1f);
-	this->addChild(sprite2);
-	//アクション2の生成
-	MoveBy* action2 = MoveBy::create(1.f, Vec2(400.f, 200.f));
-	sprite2->runAction(action2);
-
-	//EaseBounceOut* action2 = EaseBounceOut::create(action1);
-	//EaseElasticOut* action2 = EaseElasticOut::create(action1);
-	//EaseInOut* action2 = EaseInOut::create(action1, 2.f);
-	//ScaleBy* action1 = ScaleBy::create(1.f, 3.f);
-	//ccBezierConfig conf;
-	//conf.controlPoint_1 = Vec2(800.f, 700.f);
-	//conf.controlPoint_2 = Vec2(1000.f, 700.f);
-	//conf.endPosition = Vec2(1200.f, 360.f);
-	//BezierTo* action1 = BezierTo::create(2.f, conf);
-	//sprite->setOpacity(0);
-	//FadeIn* action1 = FadeIn::create(1.f);
-	//ノードに対してアクションを実行する
-
-	sprite->getTexture()->setAliasTexParameters();
+		MoveBy* action1 = MoveBy::create(1.f, Vec2(400.f, 200.f));
+		sprite[i]->runAction(action1);
+	}
 
 	this->scheduleUpdate();
 
