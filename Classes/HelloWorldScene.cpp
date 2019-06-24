@@ -103,9 +103,12 @@ bool HelloWorld::init() {
 	this->addChild(sprite);
 	//this->addChild(sprite2);
 
-	//アクションの生成(1秒かけて 右に200、上に100動く)
-	MoveBy* action1 = MoveBy::create(1.f, Vec2(200.f, 100.f));
-	EaseIn* action2 = EaseIn::create(action1, 2.f);
+	//アクションの生成(1秒かけて 右に400、上に200動く)
+	MoveBy* action1 = MoveBy::create(1.f, Vec2(400.f, 0.f));
+	EaseBackIn* action2 = EaseBackIn::create(action1);
+	//EaseBounceOut* action2 = EaseBounceOut::create(action1);
+	//EaseElasticOut* action2 = EaseElasticOut::create(action1);
+	//EaseInOut* action2 = EaseInOut::create(action1, 2.f);
 	//ScaleBy* action1 = ScaleBy::create(1.f, 3.f);
 	//ccBezierConfig conf;
 	//conf.controlPoint_1 = Vec2(800.f, 700.f);
