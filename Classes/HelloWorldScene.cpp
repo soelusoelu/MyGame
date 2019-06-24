@@ -29,185 +29,113 @@ USING_NS_CC;
 
 
 Scene* HelloWorld::createScene() {
-    return HelloWorld::create();
+	return HelloWorld::create();
 }
 
 // Print useful error message instead of segfaulting when files are not there.
 static void problemLoading(const char* filename) {
-    printf("Error while loading: %s\n", filename);
-    printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in HelloWorldScene.cpp\n");
+	printf("Error while loading: %s\n", filename);
+	printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in HelloWorldScene.cpp\n");
 }
 
 // on "init" you need to initialize your instance
 bool HelloWorld::init() {
-    //////////////////////////////
-    // 1. super init first
-    if (!Scene::init()) {
-        return false;
-    }
+	//////////////////////////////
+	// 1. super init first
+	if (!Scene::init()) {
+		return false;
+	}
 
-    auto visibleSize = Director::getInstance()->getVisibleSize();
-    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+	auto visibleSize = Director::getInstance()->getVisibleSize();
+	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    /////////////////////////////
-    // 2. add a menu item with "X" image, which is clicked to quit the program
-    //    you may modify it.
+	/////////////////////////////
+	// 2. add a menu item with "X" image, which is clicked to quit the program
+	//    you may modify it.
 
-    // add a "close" icon to exit the progress. it's an autorelease object
-    auto closeItem = MenuItemImage::create(
-        "CloseNormal.png",
-        "CloseSelected.png",
-        CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
+	// add a "close" icon to exit the progress. it's an autorelease object
+	auto closeItem = MenuItemImage::create(
+		"CloseNormal.png",
+		"CloseSelected.png",
+		CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
 
-    if (closeItem == nullptr ||
-        closeItem->getContentSize().width <= 0 ||
-        closeItem->getContentSize().height <= 0) {
-        problemLoading("'CloseNormal.png' and 'CloseSelected.png'");
-    } else {
-        float x = origin.x + visibleSize.width - closeItem->getContentSize().width / 2;
-        float y = origin.y + closeItem->getContentSize().height / 2;
-        closeItem->setPosition(Vec2(x, y));
-    }
+	if (closeItem == nullptr ||
+		closeItem->getContentSize().width <= 0 ||
+		closeItem->getContentSize().height <= 0) {
+		problemLoading("'CloseNormal.png' and 'CloseSelected.png'");
+	}
+	else {
+		float x = origin.x + visibleSize.width - closeItem->getContentSize().width / 2;
+		float y = origin.y + closeItem->getContentSize().height / 2;
+		closeItem->setPosition(Vec2(x, y));
+	}
 
-    // create menu, it's an autorelease object
-    auto menu = Menu::create(closeItem, NULL);
-    menu->setPosition(Vec2::ZERO);
-    this->addChild(menu, 1);
+	// create menu, it's an autorelease object
+	auto menu = Menu::create(closeItem, NULL);
+	menu->setPosition(Vec2::ZERO);
+	this->addChild(menu, 1);
 
-    /////////////////////////////
-    // 3. add your codes below...
+	/////////////////////////////
+	// 3. add your codes below...
 
-    // add a label shows "Hello World"
-    // create and initialize a label
+	// add a label shows "Hello World"
+	// create and initialize a label
 
-    auto label = Label::createWithTTF("Hello World", "fonts/Marker Felt.ttf", 24);
-    if (label == nullptr) {
-        problemLoading("'fonts/Marker Felt.ttf'");
-    } else {
-        // position the label on the center of the screen
-        label->setPosition(Vec2(origin.x + visibleSize.width / 2,
-            origin.y + visibleSize.height - label->getContentSize().height));
+	auto label = Label::createWithTTF("Hello World", "fonts/Marker Felt.ttf", 24);
+	if (label == nullptr) {
+		problemLoading("'fonts/Marker Felt.ttf'");
+	}
+	else {
+		// position the label on the center of the screen
+		label->setPosition(Vec2(origin.x + visibleSize.width / 2,
+			origin.y + visibleSize.height - label->getContentSize().height));
 
-        // add the label as a child to this layer
-        this->addChild(label, 1);
-    }
+		// add the label as a child to this layer
+		this->addChild(label, 1);
+	}
 
-    //テクスチャファイル名を指定して、スプライトを作成
-    sprite = Sprite::create("sample04.png");
-    //sprite2 = Sprite::create("maki.png");
-    //シーングラフにつなぐ
-    this->addChild(sprite);
-    //this->addChild(sprite2);
+	//テクスチャファイル名を指定して、スプライトを作成
+	sprite = Sprite::create("forest.png");
+	//sprite2 = Sprite::create("maki.png");
+	sprite->setPosition(Vec2(visibleSize.width / 2.f, visibleSize.height / 2.f));
+	sprite->setScale(0.1f, 0.1f);
+	//シーングラフにつなぐ
+	this->addChild(sprite);
+	//this->addChild(sprite2);
 
-    //表示座標を指定
-    sprite->setPosition(Vec2(1000.f, 400.f));
-    //sprite2->setPosition(Vec2(1000.f, 600.f));
-    //回転角を指定(45度)
-    //sprite->setRotation(45.f);
-    //拡縮を指定(横3倍、縦4倍)
-    //sprite->setScale(3.f, 4.f);
-    sprite->setScale(10.f);
-    //sprite2->setScale(0.1f);
-    //左右反転
-    //sprite->setFlippedX(true);
-    //上下反転
-    //sprite->setFlippedY(true);
-    //非表示にする
-    //sprite->setVisible(false);
-    //色合いを設定
-    //sprite->setColor(Color3B(0x00, 0xff, 0xff));
-    //不透明度を設定
-    //sprite->setOpacity(0x80);
-    //sprite->setAnchorPoint(Vec2(0.f, 1.f));
-    sprite->getTexture()->setAliasTexParameters();
+	//アクションの生成(1秒かけて 右に200、上に100動く)
+	MoveBy* action1 = MoveBy::create(1.f, Vec2(200.f, 100.f));
+	EaseIn* action2 = EaseIn::create(action1, 2.f);
+	//ScaleBy* action1 = ScaleBy::create(1.f, 3.f);
+	//ccBezierConfig conf;
+	//conf.controlPoint_1 = Vec2(800.f, 700.f);
+	//conf.controlPoint_2 = Vec2(1000.f, 700.f);
+	//conf.endPosition = Vec2(1200.f, 360.f);
+	//BezierTo* action1 = BezierTo::create(2.f, conf);
+	//sprite->setOpacity(0);
+	//FadeIn* action1 = FadeIn::create(1.f);
+	//ノードに対してアクションを実行する
+	sprite->runAction(action2);
 
-    this->scheduleUpdate();
+	sprite->getTexture()->setAliasTexParameters();
 
-    //alpha = 255;
-    //rotation = 0;
-    animTime = 0;
-    dir = Dir::LEFT;
+	this->scheduleUpdate();
 
-    return true;
+	return true;
 }
 
 
 void HelloWorld::menuCloseCallback(Ref* pSender) {
-    //Close the cocos2d-x game scene and quit the application
-    Director::getInstance()->end();
+	//Close the cocos2d-x game scene and quit the application
+	Director::getInstance()->end();
 
-    /*To navigate back to native iOS screen(if present) without quitting the application  ,do not use Director::getInstance()->end() as given above,instead trigger a custom event created in RootViewController.mm as below*/
+	/*To navigate back to native iOS screen(if present) without quitting the application  ,do not use Director::getInstance()->end() as given above,instead trigger a custom event created in RootViewController.mm as below*/
 
-    //EventCustom customEndEvent("game_scene_close_event");
-    //_eventDispatcher->dispatchEvent(&customEndEvent);
+	//EventCustom customEndEvent("game_scene_close_event");
+	//_eventDispatcher->dispatchEvent(&customEndEvent);
 
 
 }
 
 void HelloWorld::update(float delta) {
-    //スプライトの現在座標を取得
-    Vec2 pos = sprite->getPosition();
-    //Vec2 pos2 = sprite2->getPosition();
-    //座標を移動させる
-    //pos += Vec2(-1.f, 0.f);
-    //移動後の座標を反映
-    //sprite->setPosition(pos);
-
-    //alpha -= 0.85f; //255 / 5 = 51, 51 / 60 = 0.85
-    alpha -= 1.41666f;
-    sprite->setColor(cocos2d::Color3B(alpha, 0, 255 - alpha));
-    //sprite->setOpacity(alpha);
-    //sprite2->setOpacity(255 - alpha);
-
-    //rotation++;
-    //sprite->setRotation(rotation);
-
-    animTime++;
-    if (animTime > 60) {
-        animTime = 0;
-    }
-
-    float animRect = 0.f;
-    if (0 <= animTime && animTime < 15) {
-        animRect = 0.f;
-    } else if (15 <= animTime && animTime < 30 || 45 <= animTime) {
-        animRect = 42.f;
-    } else if (30 <= animTime && animTime < 45) {
-        animRect = 84.f;
-    }
-    switch (dir) {
-        //case UP:
-        //    pos.y += 3.f;
-        //    break; 
-        //case DOWN:
-        //    pos.y -= 3.f;
-        //    break;
-    case LEFT:
-        pos.x -= 3.f;
-        sprite->setTextureRect(cocos2d::Rect(animRect, 46.f, 32.f, 32.f));
-        break;
-    case RIGHT:
-        pos.x += 3.f;
-        sprite->setTextureRect(cocos2d::Rect(animRect, 86.f, 32.f, 32.f));
-        break;
-    }
-    sprite->setPosition(pos);
-
-    if (dir == Dir::LEFT && pos.x < 150) {
-        dir = Dir::RIGHT;
-    } else if (dir == Dir::RIGHT && pos.x > 1100) {
-        dir = Dir::LEFT;
-    }
-
-    //if (dir == Dir::LEFT && pos.x < 150) {
-    //    dir = Dir::DOWN;
-    //} else if (dir == Dir::DOWN && pos.y < 100) {
-    //    dir = Dir::RIGHT;
-    //    sprite->setFlippedX(true);
-    //} else if (dir == Dir::RIGHT && pos.x > 1100) {
-    //    dir = Dir::UP;
-    //} else if (dir == Dir::UP && pos.y > 600) {
-    //    dir = Dir::LEFT;
-    //    sprite->setFlippedX(true);
-    //}
 }

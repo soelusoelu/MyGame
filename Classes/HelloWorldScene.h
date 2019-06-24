@@ -44,14 +44,6 @@ public:
 
     cocos2d::Sprite* sprite;
     cocos2d::Sprite* sprite2;
-
-    float alpha;
-    int rotation;
-    int animTime;
-    enum Dir {
-        UP, DOWN, LEFT, RIGHT
-    };
-    Dir dir;
 };
 
 #endif // __HELLOWORLD_SCENE_H__
