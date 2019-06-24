@@ -94,18 +94,24 @@ bool HelloWorld::init() {
 		this->addChild(label, 1);
 	}
 
-	//テクスチャファイル名を指定して、スプライトを作成
+	//スプライトを作成
 	sprite = Sprite::create("forest.png");
-	//sprite2 = Sprite::create("maki.png");
 	sprite->setPosition(Vec2(visibleSize.width / 2.f, visibleSize.height / 2.f));
 	sprite->setScale(0.1f, 0.1f);
-	//シーングラフにつなぐ
 	this->addChild(sprite);
-	//this->addChild(sprite2);
+	//アクションの生成
+	MoveBy* action1 = MoveBy::create(1.f, Vec2(400.f, 200.f));
+	sprite->runAction(action1);
 
-	//アクションの生成(1秒かけて 右に400、上に200動く)
-	MoveBy* action1 = MoveBy::create(1.f, Vec2(400.f, 0.f));
-	EaseBackIn* action2 = EaseBackIn::create(action1);
+	//スプライト2を生成
+	sprite2 = Sprite::create("maki.png");
+	sprite2->setPosition(Vec2(300.f, visibleSize.height / 2.f));
+	sprite2->setScale(0.1f, 0.1f);
+	this->addChild(sprite2);
+	//アクション2の生成
+	MoveBy* action2 = MoveBy::create(1.f, Vec2(400.f, 200.f));
+	sprite2->runAction(action2);
+
 	//EaseBounceOut* action2 = EaseBounceOut::create(action1);
 	//EaseElasticOut* action2 = EaseElasticOut::create(action1);
 	//EaseInOut* action2 = EaseInOut::create(action1, 2.f);
@@ -118,7 +124,6 @@ bool HelloWorld::init() {
 	//sprite->setOpacity(0);
 	//FadeIn* action1 = FadeIn::create(1.f);
 	//ノードに対してアクションを実行する
-	sprite->runAction(action2);
 
 	sprite->getTexture()->setAliasTexParameters();
 
