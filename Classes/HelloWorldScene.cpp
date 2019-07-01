@@ -94,12 +94,13 @@ bool HelloWorld::init() {
 
     Sprite* spr = Sprite::create("HelloWorld.png");
     this->addChild(spr);
+    spr->setPosition(Vec2(1180.f, 600.f));
 
-    auto* jumpBy = JumpBy::create(0.5f, Vec2(100.f, 100.f), 100, 1);
-    auto* moveTo = MoveTo::create(2.f, Vec2(600.f, 300.f));
-    auto* seq = Sequence::create(jumpBy, moveTo, nullptr);
+    auto* moveTo = MoveTo::create(5.f, Vec2(1180.f, 600.f));
+    auto* negMoveTo = MoveTo::create(5.f, Vec2(100.f, 600.f));
+    auto* spawn = Spawn::create(moveTo, nullptr);
+    auto* seq = Sequence::create(negMoveTo, spawn, nullptr);
     auto* repeatForever = RepeatForever::create(seq);
-
     spr->runAction(repeatForever);
 
     this->scheduleUpdate();
