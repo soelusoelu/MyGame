@@ -95,13 +95,12 @@ bool HelloWorld::init() {
     Sprite* spr = Sprite::create("HelloWorld.png");
     this->addChild(spr);
 
+    auto* jumpBy = JumpBy::create(0.5f, Vec2(100.f, 100.f), 100, 1);
     auto* moveTo = MoveTo::create(2.f, Vec2(600.f, 300.f));
-    auto* jumpTo = JumpTo::create(1.f, Vec2(200.f, 200.f), 300.f, 2);
-    auto* tintTo = TintTo::create(1.f, Color3B(255, 255, 0));
-    auto* spawn = Spawn::create(jumpTo, tintTo, nullptr);
-    auto* seq = Sequence::create(moveTo, spawn, nullptr);
+    auto* seq = Sequence::create(jumpBy, moveTo, nullptr);
+    auto* repeatForever = RepeatForever::create(seq);
 
-    spr->runAction(seq);
+    spr->runAction(repeatForever);
 
     this->scheduleUpdate();
 
