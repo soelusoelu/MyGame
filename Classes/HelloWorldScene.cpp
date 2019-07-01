@@ -96,10 +96,17 @@ bool HelloWorld::init() {
     this->addChild(spr);
     spr->setPosition(Vec2(1180.f, 600.f));
 
-    auto* moveTo = MoveTo::create(5.f, Vec2(1180.f, 600.f));
-    auto* negMoveTo = MoveTo::create(5.f, Vec2(100.f, 600.f));
-    auto* spawn = Spawn::create(moveTo, nullptr);
-    auto* seq = Sequence::create(negMoveTo, spawn, nullptr);
+    auto* right = MoveTo::create(5.f, Vec2(1180.f, 100.f));
+    auto* left = MoveTo::create(5.f, Vec2(100.f, 600.f));
+    auto* up = MoveTo::create(5.f, Vec2(1180.f, 600.f));
+    auto* bottom = MoveTo::create(5.f, Vec2(100.f, 100.f));
+    auto* fadeOut = FadeOut::create(5.f);
+    auto* fadeIn = FadeIn::create(5.f);
+    auto* spawn1 = Spawn::create(left, fadeOut, nullptr);
+    auto* spawn2 = Spawn::create(bottom, fadeIn, nullptr);
+    auto* spawn3 = Spawn::create(right, fadeOut, nullptr);
+    auto* spawn4 = Spawn::create(up, fadeIn, nullptr);
+    auto* seq = Sequence::create(spawn1, spawn2, spawn3, spawn4, nullptr);
     auto* repeatForever = RepeatForever::create(seq);
     spr->runAction(repeatForever);
 
