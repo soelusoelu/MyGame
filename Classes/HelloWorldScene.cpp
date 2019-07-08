@@ -24,6 +24,7 @@
 
 #include "HelloWorldScene.h"
 #include "SimpleAudioEngine.h"
+#include "AudioEngine.h"
 
 USING_NS_CC;
 
@@ -92,6 +93,8 @@ bool HelloWorld::init() {
         this->addChild(label, 1);
     }
 
+    mAudioID = experimental::AudioEngine::play2d("bgm.mp3", true);
+
     this->scheduleUpdate();
 
     return true;
@@ -117,4 +120,13 @@ float HelloWorld::randRange(float range) {
 }
 
 void HelloWorld::update(float delta) {
+    unsigned int total = Director::getInstance()->getTotalFrames();
+
+    if (total == 60) {
+        //experimental::AudioEngine::stop(mAudioID);
+        experimental::AudioEngine::pause(mAudioID);
+    }
+    if (total == 120) {
+        experimental::AudioEngine::resume(mAudioID);
+    }
 }
