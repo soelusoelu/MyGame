@@ -26,6 +26,7 @@
 #define __HELLOWORLD_SCENE_H__
 
 #include "cocos2d.h"
+#include <string>
 
 class HelloWorld : public cocos2d::Scene
 {
@@ -35,6 +36,9 @@ public:
     virtual bool init();
 
     void update(float delta) override;
+
+    void myFunction();
+    void myFunction2(std::string filename);
 
     // a selector callback
     void menuCloseCallback(cocos2d::Ref* pSender);

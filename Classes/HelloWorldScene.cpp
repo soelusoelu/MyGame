@@ -92,6 +92,12 @@ bool HelloWorld::init() {
         // add the label as a child to this layer
         this->addChild(label, 1);
     }
+    DelayTime* delay = DelayTime::create(1.f);
+    CallFunc* callFunc = CallFunc::create(CC_CALLBACK_0(HelloWorld::myFunction, this));
+    CallFunc* callFunc2 = CallFunc::create(CC_CALLBACK_0(HelloWorld::myFunction2, this, "HelloWorld.png"));
+    Sequence* seq = Sequence::create(delay, callFunc, delay, callFunc2, nullptr);
+
+    this->runAction(callFunc);
 
     mAudioID = experimental::AudioEngine::play2d("bgm.mp3", true);
 
@@ -120,13 +126,11 @@ float HelloWorld::randRange(float range) {
 }
 
 void HelloWorld::update(float delta) {
-    unsigned int total = Director::getInstance()->getTotalFrames();
+}
 
-    if (total == 60) {
-        //experimental::AudioEngine::stop(mAudioID);
-        experimental::AudioEngine::pause(mAudioID);
-    }
-    if (total == 120) {
-        experimental::AudioEngine::resume(mAudioID);
-    }
+void HelloWorld::myFunction() {
+    Sprite* spr = Sprite::create("HelloWorld.png");
+}
+void HelloWorld::myFunction2(std::string filename) {
+    Sprite* spr = Sprite::create(filename);
 }
