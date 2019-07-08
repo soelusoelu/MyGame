@@ -92,17 +92,6 @@ bool HelloWorld::init() {
         this->addChild(label, 1);
     }
 
-    Sprite* spr = Sprite::create("HelloWorld.png");
-    this->addChild(spr);
-    spr->setPosition(Vec2(1180.f, 600.f));
-
-    auto* moveTo = MoveTo::create(5.f, Vec2(1180.f, 600.f));
-    auto* negMoveTo = MoveTo::create(5.f, Vec2(100.f, 600.f));
-    auto* spawn = Spawn::create(moveTo, nullptr);
-    auto* seq = Sequence::create(negMoveTo, spawn, nullptr);
-    auto* repeatForever = RepeatForever::create(seq);
-    spr->runAction(repeatForever);
-
     this->scheduleUpdate();
 
     return true;
@@ -117,8 +106,6 @@ void HelloWorld::menuCloseCallback(Ref* pSender) {
 
     //EventCustom customEndEvent("game_scene_close_event");
     //_eventDispatcher->dispatchEvent(&customEndEvent);
-
-
 }
 
 //0‚©‚çˆø”‚Ì”ÍˆÍ“à‚Ì”š‚ğ•Ô‚·
