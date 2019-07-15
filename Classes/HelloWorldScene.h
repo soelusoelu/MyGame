@@ -41,10 +41,6 @@ public:
     
     // implement the "static create()" method manually
     CREATE_FUNC(HelloWorld);
-
-//private:
-//    Sprite* mMario;
-//    Sprite* mKuppa;
 };
 
 #endif // __HELLOWORLD_SCENE_H__

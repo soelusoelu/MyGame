@@ -75,6 +75,13 @@ bool HelloWorld::init() {
     FadeOut* fadeKuppa = FadeOut::create(1.f);
     Sequence* seq2 = Sequence::create(delay, deadKuppa, kuppaDown, fadeKuppa, nullptr);
     kuppa->runAction(seq2);
+
+    RotateBy* rotateMario = RotateBy::create(0.025f, -30.f);
+    Repeat* rotMarRep = Repeat::create(rotateMario, 36);
+    JumpTo* defaultPos = JumpTo::create(1.f, Vec2(100.f, 100.f), 250.f, 1);
+    Spawn* spawn = Spawn::create(defaultPos, rotMarRep, nullptr);
+    Sequence* seq3 = Sequence::create(delay, spawn, nullptr);
+    mario->runAction(seq3);
     /***************Main**********************/
 
     this->scheduleUpdate();
