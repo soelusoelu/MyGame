@@ -24,6 +24,7 @@
 
 #include "HelloWorldScene.h"
 #include "SimpleAudioEngine.h"
+#include "AudioEngine.h"
 
 USING_NS_CC;
 
@@ -46,51 +47,35 @@ bool HelloWorld::init() {
         return false;
     }
 
-    auto visibleSize = Director::getInstance()->getVisibleSize();
-    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+    experimental::AudioEngine::play2d("bgm.mp3", true);
 
-    /////////////////////////////
-    // 2. add a menu item with "X" image, which is clicked to quit the program
-    //    you may modify it.
+    Sprite* mario = Sprite::create("mario_run.png");
+    mario->setScale(0.2f);
+    mario->setPosition(Vec2(100.f, 100.f));
+    Sprite* kuppa = Sprite::create("kuppa.png");
+    kuppa->setScale(0.4f);
+    kuppa->setPosition(Vec2(1000.f, 150.f));
 
-    // add a "close" icon to exit the progress. it's an autorelease object
-    auto closeItem = MenuItemImage::create(
-        "CloseNormal.png",
-        "CloseSelected.png",
-        CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
+    this->addChild(mario);
+    this->addChild(kuppa);
 
-    if (closeItem == nullptr ||
-        closeItem->getContentSize().width <= 0 ||
-        closeItem->getContentSize().height <= 0) {
-        problemLoading("'CloseNormal.png' and 'CloseSelected.png'");
-    } else {
-        float x = origin.x + visibleSize.width - closeItem->getContentSize().width / 2;
-        float y = origin.y + closeItem->getContentSize().height / 2;
-        closeItem->setPosition(Vec2(x, y));
-    }
+    /***************Main**********************/
+    MoveBy* initToJump = MoveBy::create(3.f, Vec2(650.f, 0.f));
+    JumpBy* jumpToKuppaHead = JumpBy::create(1.f, Vec2(150.f, 200.f), 100.f, 1);
+    MoveTo* kuppaHeadToUp = MoveTo::create(0.1f, Vec2(900.f, 400.f));
+    MoveTo* kuppaHeadToBottom = MoveTo::create(0.1f, Vec2(900.f, 300.f));
+    Sequence* upBottom = Sequence::create(kuppaHeadToUp, kuppaHeadToBottom, nullptr);
+    Repeat* stepOn = Repeat::create(upBottom, 10);
+    Sequence* seq1 = Sequence::create(initToJump, jumpToKuppaHead, stepOn, nullptr);
+    mario->runAction(seq1);
 
-    // create menu, it's an autorelease object
-    auto menu = Menu::create(closeItem, NULL);
-    menu->setPosition(Vec2::ZERO);
-    this->addChild(menu, 1);
-
-    /////////////////////////////
-    // 3. add your codes below...
-
-    // add a label shows "Hello World"
-    // create and initialize a label
-
-    auto label = Label::createWithTTF("Hello World", "fonts/Marker Felt.ttf", 24);
-    if (label == nullptr) {
-        problemLoading("'fonts/Marker Felt.ttf'");
-    } else {
-        // position the label on the center of the screen
-        label->setPosition(Vec2(origin.x + visibleSize.width / 2,
-            origin.y + visibleSize.height - label->getContentSize().height));
-
-        // add the label as a child to this layer
-        this->addChild(label, 1);
-    }
+    DelayTime* delay = DelayTime::create(6.5f);
+    TintTo* deadKuppa = TintTo::create(1.f, Color3B(255, 0, 0));
+    RotateBy* kuppaDown = RotateBy::create(1.f, 90.f);
+    FadeOut* fadeKuppa = FadeOut::create(1.f);
+    Sequence* seq2 = Sequence::create(delay, deadKuppa, kuppaDown, fadeKuppa, nullptr);
+    kuppa->runAction(seq2);
+    /***************Main**********************/
 
     this->scheduleUpdate();
 
@@ -108,11 +93,6 @@ void HelloWorld::menuCloseCallback(Ref* pSender) {
     //_eventDispatcher->dispatchEvent(&customEndEvent);
 }
 
-//0‚©‚çˆø”‚Ì”ÍˆÍ“à‚Ì”š‚ğ•Ô‚·
-float HelloWorld::randRange(float range) {
-    srand(time(nullptr));
-    return static_cast<float>(rand()) / RAND_MAX * range;
-}
-
 void HelloWorld::update(float delta) {
 }
+
